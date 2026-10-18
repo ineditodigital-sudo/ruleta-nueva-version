@@ -8,7 +8,10 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc -b"
+    "typecheck": "tsc -b",
+    "serve:dist": "php -S 127.0.0.1:8090 -t dist scripts/php-router.php",
+    "e2e": "node scripts/e2e.mjs",
+    "guia": "node docs/guia/build.mjs"
   },
   "dependencies": {
     "@fontsource-variable/montserrat": "5.1.0",

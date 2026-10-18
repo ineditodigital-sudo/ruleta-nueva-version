@@ -8,3 +8,7 @@ dist
 ruleta-uta-datos/
 public/api/config.php
 tsconfig.tsbuildinfo
+# Guía en PDF: la contraseña y la versión interna nunca van al repo (es público)
+docs/guia/password.txt
+docs/guia/guia.html
+docs/guia/Guia-Ruleta-UTA.pdf
