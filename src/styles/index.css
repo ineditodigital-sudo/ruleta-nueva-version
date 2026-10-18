@@ -1,0 +1,498 @@
+@import "tailwindcss";
+
+/* -------------------------------------------------------------------------- */
+/*  Tokens                                                                    */
+/* -------------------------------------------------------------------------- */
+
+:root {
+  --font-sans: "Montserrat Variable", "Montserrat", "Helvetica Neue", Arial, sans-serif;
+
+  /* Paleta del sello UTA */
+  --ut-ink: #071a2e;
+  --ut-ink-deep: #04111f;
+  --ut-ink-soft: #0d2742;
+  --ut-ink-line: #1c3a5e;
+  --ut-blue: #0060a0;
+  --ut-blue-bright: #2e8bd8;
+  --ut-sky: #6fb2ec;
+  --ut-copper: #e4a57b;
+  --ut-copper-bright: #f3c29c;
+  --ut-copper-deep: #a9775a;
+  --ut-chrome: #d7dce3;
+  --ut-chrome-dark: #7d8692;
+  --ut-paper: #f7f8fa;
+
+  /* Tema del tótem (oscuro por defecto) */
+  --ut-field: var(--ut-ink);
+  --ut-field-edge: var(--ut-ink-deep);
+  --ut-surface: var(--ut-ink-soft);
+  --ut-surface-deep: #0a2038;
+  --ut-line: var(--ut-ink-line);
+  --ut-text: var(--ut-paper);
+  --ut-text-muted: #a3b6ce;
+  --ut-text-faint: #7088a6;
+  --ut-placeholder: #8ba2bf;
+  --ut-grid: rgba(163, 182, 206, 0.045);
+  --ut-danger: #ff8a95;
+  --ut-win: var(--ut-copper-bright);
+  --ut-glow-top: rgba(0, 96, 160, 0.38);
+  --ut-glow-bottom: rgba(228, 165, 123, 0.1);
+
+  --ut-elev-1: 0 1px 2px rgba(2, 8, 16, 0.4), 0 2px 8px rgba(2, 8, 16, 0.3);
+  --ut-elev-2: 0 2px 4px rgba(2, 8, 16, 0.45), 0 12px 28px rgba(2, 8, 16, 0.42);
+  --ut-elev-3: 0 4px 8px rgba(2, 8, 16, 0.5), 0 28px 64px rgba(2, 8, 16, 0.55);
+  --ut-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ut-ease-arrive: cubic-bezier(0.16, 1, 0.3, 1);
+  --ut-ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ut-radius: 24px;
+  --ut-radius-sm: 14px;
+
+  /* Tokens de los componentes del panel (estilo shadcn) */
+  --background: #ffffff;
+  --foreground: #0b2440;
+  --card: #ffffff;
+  --card-foreground: #0b2440;
+  --popover: #ffffff;
+  --popover-foreground: #0b2440;
+  --primary: var(--ut-ink);
+  --primary-foreground: var(--ut-paper);
+  --secondary: #eef2f7;
+  --secondary-foreground: var(--ut-ink);
+  --muted: #eef2f7;
+  --muted-foreground: #5b6b82;
+  --accent: #eef2f7;
+  --accent-foreground: var(--ut-ink);
+  --destructive: #d4183d;
+  --destructive-foreground: #ffffff;
+  --border: #dde3ec;
+  --input: #d5dde8;
+  --input-background: #f6f8fb;
+  --ring: var(--ut-blue-bright);
+  --radius: 0.75rem;
+
+  accent-color: var(--ut-blue-bright);
+  caret-color: var(--ut-blue-bright);
+  scrollbar-color: var(--ut-ink-line) transparent;
+  scrollbar-width: thin;
+}
+
+[data-ut-theme="light"] {
+  --ut-field: #f3f5f9;
+  --ut-field-edge: #dce3ec;
+  --ut-surface: #ffffff;
+  --ut-surface-deep: #eef2f7;
+  --ut-line: #d5dde8;
+  --ut-text: #0b2440;
+  --ut-text-muted: #4e5f78;
+  --ut-text-faint: #66768e;
+  --ut-placeholder: #7a8aa0;
+  --ut-grid: rgba(11, 36, 64, 0.05);
+  --ut-danger: #c2334a;
+  --ut-win: var(--ut-copper-deep);
+  --ut-glow-top: rgba(0, 96, 160, 0.14);
+  --ut-glow-bottom: rgba(228, 165, 123, 0.16);
+  --ut-elev-2: 0 1px 2px rgba(11, 36, 64, 0.07), 0 6px 16px rgba(11, 36, 64, 0.09);
+  --ut-elev-3: 0 2px 4px rgba(11, 36, 64, 0.06), 0 16px 40px rgba(11, 36, 64, 0.12);
+}
+
+@theme inline {
+  --font-sans: var(--font-sans);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-ring: var(--ring);
+
+  --color-ut-ink: var(--ut-ink);
+  --color-ut-ink-deep: var(--ut-ink-deep);
+  --color-ut-ink-soft: var(--ut-ink-soft);
+  --color-ut-ink-line: var(--ut-ink-line);
+  --color-ut-blue: var(--ut-blue);
+  --color-ut-blue-bright: var(--ut-blue-bright);
+  --color-ut-sky: var(--ut-sky);
+  --color-ut-copper: var(--ut-copper);
+  --color-ut-copper-bright: var(--ut-copper-bright);
+  --color-ut-copper-deep: var(--ut-copper-deep);
+  --color-ut-chrome: var(--ut-chrome);
+  --color-ut-paper: var(--ut-paper);
+
+  --color-k-field: var(--ut-field);
+  --color-k-surface: var(--ut-surface);
+  --color-k-surface-deep: var(--ut-surface-deep);
+  --color-k-line: var(--ut-line);
+  --color-k-text: var(--ut-text);
+  --color-k-muted: var(--ut-text-muted);
+  --color-k-faint: var(--ut-text-faint);
+  --color-k-placeholder: var(--ut-placeholder);
+  --color-k-danger: var(--ut-danger);
+  --color-k-win: var(--ut-win);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Base                                                                      */
+/* -------------------------------------------------------------------------- */
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  html,
+  body {
+    margin: 0;
+    background: var(--ut-ink);
+    color: var(--ut-paper);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+::selection {
+  background: color-mix(in srgb, var(--ut-copper) 40%, transparent);
+  color: inherit;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--ut-ink-line);
+  border: 3px solid transparent;
+  background-clip: content-box;
+  border-radius: 999px;
+}
+:where(button, a, input, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--ut-blue-bright);
+  outline-offset: 3px;
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Tótem                                                                     */
+/* -------------------------------------------------------------------------- */
+
+.ut-kiosk {
+  -webkit-tap-highlight-color: transparent;
+  color: var(--ut-text);
+}
+.ut-kiosk :where(h1, h2, h3, p, span, label, svg, img) {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Fondo: resplandor azul arriba, calidez cobre abajo y una retícula muy tenue. */
+.ut-field {
+  background-color: var(--ut-field);
+  background-image:
+    radial-gradient(120% 55% at 50% -12%, var(--ut-glow-top) 0%, transparent 62%),
+    radial-gradient(90% 38% at 50% 112%, var(--ut-glow-bottom) 0%, transparent 70%),
+    linear-gradient(to bottom, transparent 55%, color-mix(in srgb, var(--ut-field-edge) 70%, transparent) 100%),
+    repeating-linear-gradient(to right, var(--ut-grid) 0 1px, transparent 1px 72px),
+    repeating-linear-gradient(to bottom, var(--ut-grid) 0 1px, transparent 1px 72px);
+}
+
+.ut-panel {
+  position: relative;
+  background: linear-gradient(
+    to bottom,
+    var(--ut-surface) 0%,
+    color-mix(in srgb, var(--ut-surface) 80%, var(--ut-surface-deep)) 100%
+  );
+  border: 1px solid var(--ut-line);
+  border-radius: var(--ut-radius);
+  box-shadow: var(--ut-elev-3);
+}
+.ut-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  border-radius: var(--ut-radius) var(--ut-radius) 0 0;
+  background: linear-gradient(90deg, transparent, rgba(243, 194, 156, 0.35) 22%, rgba(243, 194, 156, 0.35) 78%, transparent);
+}
+[data-ut-theme="light"] .ut-panel::before {
+  display: none;
+}
+
+/* Metal cromado del anillo del sello. */
+.ut-chrome {
+  background: conic-gradient(
+    from 200deg,
+    #f6f8fa,
+    #8a929d 9%,
+    #eef1f4 18%,
+    #5d6672 30%,
+    #f2f4f7 42%,
+    #9aa3ae 52%,
+    #ffffff 60%,
+    #66707c 72%,
+    #e8ecf0 84%,
+    #868f9a 93%,
+    #f6f8fa
+  );
+}
+.ut-copper {
+  background: linear-gradient(135deg, var(--ut-copper-bright) 0%, var(--ut-copper) 45%, var(--ut-copper-deep) 100%);
+}
+.ut-copper-text {
+  background: linear-gradient(180deg, var(--ut-copper-bright), var(--ut-copper) 55%, var(--ut-copper-deep));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.ut-press {
+  transition:
+    transform 0.14s var(--ut-ease-out),
+    filter 0.14s var(--ut-ease-out),
+    box-shadow 0.2s var(--ut-ease-out);
+}
+.ut-press:active:not(:disabled) {
+  transform: scale(0.97);
+  filter: brightness(0.94);
+}
+.ut-press:disabled {
+  opacity: 0.5;
+}
+
+/* Botón principal del tótem: brillo que cruza cada pocos segundos. */
+.ut-cta {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.ut-cta::after {
+  content: "";
+  position: absolute;
+  inset: -20% auto -20% -40%;
+  width: 30%;
+  transform: skewX(-20deg);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  animation: ut-sheen 3.6s var(--ut-ease-in-out) 1.2s infinite;
+  z-index: -1;
+}
+@keyframes ut-sheen {
+  0% {
+    left: -40%;
+  }
+  45%,
+  100% {
+    left: 130%;
+  }
+}
+
+.ut-spin {
+  animation: ut-spin 1.1s linear infinite;
+}
+@keyframes ut-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Focos del bisel de la ruleta. */
+.ut-led {
+  background: radial-gradient(circle at 40% 35%, #fff 0%, #fbe3cf 30%, var(--ut-copper) 70%, var(--ut-copper-deep) 100%);
+  box-shadow:
+    0 0 6px 2px rgba(243, 194, 156, 0.75),
+    0 0 18px 4px rgba(228, 165, 123, 0.35);
+  opacity: 0.28;
+}
+.ut-leds[data-mode="idle"] .ut-led {
+  animation: ut-led-chase 2.4s linear infinite;
+}
+.ut-leds[data-mode="spin"] .ut-led {
+  animation: ut-led-chase 0.55s linear infinite;
+}
+.ut-leds[data-mode="win"] .ut-led {
+  animation: ut-led-blink 0.42s steps(1, end) infinite;
+}
+.ut-leds[data-mode="win"] .ut-led:nth-child(even) {
+  animation-delay: 0.21s;
+}
+.ut-leds[data-mode="still"] .ut-led {
+  opacity: 0.85;
+}
+@keyframes ut-led-chase {
+  0%,
+  100% {
+    opacity: 0.28;
+  }
+  8% {
+    opacity: 1;
+  }
+  30% {
+    opacity: 0.28;
+  }
+}
+@keyframes ut-led-blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+/* Gajo ganador: late mientras se revela el resultado. */
+.ut-segment-hit {
+  animation: ut-hit 0.5s ease-in-out infinite alternate;
+}
+@keyframes ut-hit {
+  from {
+    filter: brightness(1);
+  }
+  to {
+    filter: brightness(1.28) saturate(1.1);
+  }
+}
+
+/* Rayos detrás de la medalla del ganador. */
+.ut-rays {
+  background: repeating-conic-gradient(
+    from 0deg,
+    color-mix(in srgb, var(--ut-copper) 22%, transparent) 0deg 7deg,
+    transparent 7deg 20deg
+  );
+  mask: radial-gradient(circle, #000 0%, #000 25%, transparent 70%);
+  -webkit-mask: radial-gradient(circle, #000 0%, #000 25%, transparent 70%);
+  animation: ut-spin 26s linear infinite;
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Intro del sello (splash)                                                  */
+/* -------------------------------------------------------------------------- */
+
+.ut-seal-intro .ut-seal-ring {
+  animation: ut-ring-in 1.15s var(--ut-ease-arrive) both;
+}
+.ut-seal-intro .ut-seal-core {
+  animation: ut-core-in 0.8s var(--ut-ease-arrive) 0.35s both;
+}
+.ut-seal-intro .ut-seal-shine {
+  animation: ut-shine 1.1s var(--ut-ease-in-out) 1.05s both;
+}
+.ut-seal-intro .ut-seal-halo {
+  animation: ut-halo 1.6s var(--ut-ease-out) 0.9s both;
+}
+@keyframes ut-ring-in {
+  0% {
+    opacity: 0;
+    transform: rotate(-150deg) scale(0.82);
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+}
+@keyframes ut-core-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.4) rotate(12deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
+}
+@keyframes ut-shine {
+  0% {
+    transform: translateX(-120%) skewX(-18deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(220%) skewX(-18deg);
+    opacity: 0;
+  }
+}
+@keyframes ut-halo {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+}
+
+.ut-gradient-ink {
+  background:
+    radial-gradient(80% 50% at 0% 0%, rgba(0, 96, 160, 0.28) 0%, transparent 60%),
+    linear-gradient(135deg, var(--ut-ink) 0%, var(--ut-ink-soft) 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ut-seal-intro .ut-seal-ring,
+  .ut-seal-intro .ut-seal-core,
+  .ut-seal-intro .ut-seal-halo {
+    animation: ut-fade 0.3s var(--ut-ease-out) both;
+  }
+  .ut-seal-intro .ut-seal-shine,
+  .ut-cta::after,
+  .ut-rays {
+    animation: none;
+    display: none;
+  }
+  .ut-leds .ut-led {
+    animation: none !important;
+    opacity: 0.85;
+  }
+  .ut-press:active:not(:disabled) {
+    transform: none;
+  }
+  .ut-spin {
+    animation-duration: 2.4s;
+  }
+}
+@keyframes ut-slide-in {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes ut-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

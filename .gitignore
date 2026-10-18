@@ -1,0 +1,10 @@
+node_modules
+dist
+*.zip
+.DS_Store
+.env*
+# Datos locales del servidor de desarrollo (leads reales: nunca al repo)
+.datos-dev/
+ruleta-uta-datos/
+public/api/config.php
+tsconfig.tsbuildinfo

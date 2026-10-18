@@ -1,0 +1,38 @@
+{
+  "name": "ruleta-uta",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Ruleta de premios para tótem — Universidad Tecnológica de Aguascalientes",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc -b"
+  },
+  "dependencies": {
+    "@fontsource-variable/montserrat": "5.1.0",
+    "@radix-ui/react-alert-dialog": "1.1.2",
+    "@radix-ui/react-checkbox": "1.1.2",
+    "@radix-ui/react-dialog": "1.1.2",
+    "@radix-ui/react-label": "2.1.0",
+    "@radix-ui/react-slot": "1.1.0",
+    "@radix-ui/react-switch": "1.1.1",
+    "class-variance-authority": "0.7.1",
+    "clsx": "2.1.1",
+    "framer-motion": "11.11.17",
+    "lucide-react": "0.460.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "tailwind-merge": "2.5.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "4.1.12",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "@vitejs/plugin-react": "4.3.4",
+    "tailwindcss": "4.1.12",
+    "typescript": "5.6.3",
+    "vite": "6.4.4"
+  }
+}
