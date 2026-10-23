@@ -8,9 +8,11 @@
  * Requiere Playwright: npm i --no-save playwright && npx playwright install chromium
  *
  * Revisa: registro + giro en el tótem, que el servidor guarde el lead y sume
- * inventario/conteo, que los leads no sean públicos, la cola sin conexión y
- * el acceso al panel. No la corras contra producción: escribe datos reales.
+ * inventario/conteo, que los leads no sean públicos, la cola sin conexión, el
+ * acceso al panel y las exportaciones (CSV, Excel y PDF). No la corras contra
+ * producción: escribe datos reales.
  */
+import { readFileSync } from 'node:fs';
 import { chromium } from 'playwright';
 
 const BASE = (process.env.BASE_URL ?? 'http://127.0.0.1:8090').replace(/\/$/, '');
@@ -101,6 +103,34 @@ await page.waitForTimeout(3000);
 const left = await page.evaluate(() => JSON.parse(localStorage.getItem('utaRuletaPendingLeads') || '[]').length);
 check(left === 0, 'al volver la red, la cola se envía sola');
 await page.close();
+
+// --- Exportaciones del panel ---------------------------------------------------
+// El PDF se imprime desde un iframe: se cambia su print() para contar las páginas sin abrir el diálogo.
+await adminPage.addInitScript(() => {
+  new MutationObserver((muts) => {
+    for (const m of muts)
+      for (const n of m.addedNodes)
+        if (n instanceof HTMLIFrameElement)
+          n.contentWindow.print = () => (window.__reporte = n.contentDocument.querySelectorAll('.page').length);
+  }).observe(document, { childList: true, subtree: true });
+});
+await adminPage.reload();
+await adminPage.waitForSelector('text=Gajos de la ruleta', { timeout: 10000 });
+await adminPage.locator('aside nav button', { hasText: 'Leads' }).click();
+const download = async (label) => {
+  const [dl] = await Promise.all([adminPage.waitForEvent('download'), adminPage.getByRole('button', { name: label, exact: true }).click()]);
+  return { name: dl.suggestedFilename(), data: readFileSync(await dl.path()) };
+};
+const csv = await download('CSV');
+check(csv.name.endsWith('.csv') && csv.data.toString('utf8').includes('Contacto confiable'), 'el panel exporta el CSV');
+const xlsx = await download('Excel');
+check(xlsx.name.endsWith('.xlsx') && xlsx.data.subarray(0, 2).toString() === 'PK', 'el panel exporta el Excel');
+await adminPage.getByRole('button', { name: 'PDF', exact: true }).click();
+const pdfPages = await adminPage
+  .waitForFunction(() => window.__reporte, null, { timeout: 15000 })
+  .then((h) => h.jsonValue())
+  .catch(() => 0);
+check(pdfPages >= 3, 'el panel arma el reporte PDF', `${pdfPages} páginas`);
 
 check(errors.length === 0, 'sin errores de JavaScript', errors.join(' | '));
 await browser.close();

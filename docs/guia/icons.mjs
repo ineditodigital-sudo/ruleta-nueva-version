@@ -15,7 +15,7 @@ const React = require('react');
 const { renderToStaticMarkup } = require('react-dom/server');
 const L = require('lucide-react');
 
-const names = ['LayoutGrid', 'Palette', 'MessageSquareText', 'Users', 'Images', 'MonitorSmartphone', 'Settings', 'WifiOff', 'Timer', 'CircleSlash', 'Maximize', 'Volume2', 'FileDown', 'FileText', 'Trash2', 'RotateCcw', 'UserRoundPen', 'Sun', 'KeyRound', 'MonitorPlay', 'Hand', 'ShieldCheck', 'RefreshCw', 'Trophy', 'Smartphone', 'LogIn', 'MessageCircle', 'Phone'];
+const names = ['LayoutGrid', 'Palette', 'MessageSquareText', 'Users', 'Images', 'MonitorSmartphone', 'Settings', 'WifiOff', 'Timer', 'CircleSlash', 'Maximize', 'Volume2', 'FileDown', 'FileSpreadsheet', 'FileText', 'Trash2', 'RotateCcw', 'UserRoundPen', 'Sun', 'KeyRound', 'MonitorPlay', 'Hand', 'ShieldCheck', 'RefreshCw', 'Trophy', 'Smartphone', 'LogIn', 'MessageCircle', 'Phone'];
 const out = {};
 for (const n of names) {
   if (!L[n]) throw new Error(`lucide-react no tiene el ícono ${n}`);

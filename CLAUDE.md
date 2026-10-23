@@ -29,6 +29,10 @@ desarrollada por Inédito Agencia Digital. Producción: https://ruleta-ut.inedit
   una cola de `localStorage` que se reenvía sola.
 - El tótem se diseña en un lienzo fijo de 1080×1920 px escalado (`KioskPage`),
   por eso sus clases usan px literales (`text-[64px]`, etc.).
+- Exportación de leads (Panel → Leads): `analyzeLeads` (`src/lib/leads.ts`)
+  limpia y marca contactos confiables; `export.ts` arma el CSV y carga bajo
+  demanda `exportXlsx.ts` (exceljs) y `reportPdf.ts` (HTML A4 que se imprime
+  desde un iframe oculto). Fechas y horas siempre en `America/Mexico_City`.
 
 ## Convenciones
 

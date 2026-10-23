@@ -391,8 +391,8 @@ tr:last-child td { border-bottom: 0; }
     <div><div class="panel-shot"><img src="img/a-leads.jpg" alt=""></div>
     <div class="cap">Leads: búsqueda, filtro por resultado, edición y exportación.</div></div>
     <div class="end end-col">
-      <div class="endc"><div class="h">${ic('FileDown')} Exportar CSV</div><p>Se abre directo en Excel con columnas y acentos correctos.</p></div>
-      <div class="endc"><div class="h">${ic('FileText')} Reporte</div><p>Resumen y tabla listos para imprimir: <b>Ctrl+P → Guardar como PDF</b>.</p></div>
+      <div class="endc"><div class="h">${ic('FileSpreadsheet')} Excel y PDF</div><p>Con diseño UTA: resumen por día y hora, lista y contactos para revisar. El PDF abre la impresión: <b>Guardar como PDF</b>.</p></div>
+      <div class="endc"><div class="h">${ic('FileDown')} CSV</div><p>Lista limpia para Mailchimp o un CRM. Filtra <b>Contacto confiable = Sí</b>.</p></div>
       <div class="endc warn"><div class="h">${ic('Trash2')} Vaciar</div><p>Borra los leads y reinicia inventario y conteo. <b>Exporta antes</b>: no se puede deshacer.</p></div>
     </div>
     </div>

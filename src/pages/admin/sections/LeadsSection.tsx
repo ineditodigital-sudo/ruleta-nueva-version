@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { FileDown, FileText, Pencil, Search, Trash2, Users } from "lucide-react";
+import { FileDown, FileSpreadsheet, FileText, Loader2, Pencil, Search, Trash2, Users } from "lucide-react";
 import {
   Badge,
   Button,
@@ -24,11 +24,21 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui";
-import { exportLeadsCsv, exportLeadsReport, isWinner } from "@/lib/export";
+import { exportLeadsCsv, exportLeadsPdf, exportLeadsXlsx, isWinner } from "@/lib/export";
+import { analyzeLeads } from "@/lib/leads";
 import type { Participant } from "@/lib/types";
 import { useApp } from "@/state/AppProvider";
 
+type ExportKind = "xlsx" | "pdf" | "csv";
+
+const EXPORTS = [
+  { kind: "xlsx", label: "Excel", title: "Libro con resumen, lista de leads y datos para revisar", icon: FileSpreadsheet, variant: "copper" },
+  { kind: "pdf", label: "PDF", title: "Reporte para imprimir o compartir", icon: FileText, variant: "outline" },
+  { kind: "csv", label: "CSV", title: "Lista limpia para Mailchimp, un CRM o Google Sheets", icon: FileDown, variant: "outline" },
+] as const;
+
 const when = new Intl.DateTimeFormat("es-MX", {
+  timeZone: "America/Mexico_City",
   day: "2-digit",
   month: "short",
   year: "numeric",
@@ -44,9 +54,26 @@ export default function LeadsSection() {
   const [form, setForm] = useState({ name: "", email: "", phone: "" });
   const [toDelete, setToDelete] = useState<Participant | null>(null);
   const [clearAll, setClearAll] = useState(false);
+  const [exporting, setExporting] = useState<ExportKind | null>(null);
+  const [exportError, setExportError] = useState("");
 
   const leads = state.participants;
   const winners = leads.filter(isWinner).length;
+  const reliable = useMemo(() => analyzeLeads(leads).summary.reliable, [leads]);
+
+  const runExport = async (kind: ExportKind) => {
+    setExporting(kind);
+    setExportError("");
+    try {
+      if (kind === "csv") exportLeadsCsv(leads);
+      else if (kind === "xlsx") await exportLeadsXlsx(leads, state.brand);
+      else await exportLeadsPdf(leads, state.brand);
+    } catch {
+      setExportError("No se pudo generar el archivo. Revisa tu conexión y vuelve a intentarlo.");
+    } finally {
+      setExporting(null);
+    }
+  };
 
   const rows = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -72,21 +99,34 @@ export default function LeadsSection() {
             <div>
               <CardTitle>Participantes y leads</CardTitle>
               <CardDescription>
-                {leads.length} en total · {winners} ganadores · {leads.length - winners} sin premio
+                {leads.length} en total · {winners} {winners === 1 ? "ganador" : "ganadores"} · {leads.length - winners} sin premio · {reliable} con
+                contacto confiable
               </CardDescription>
             </div>
-            <div className="flex flex-wrap items-center gap-2">
-              <Button variant="copper" onClick={() => exportLeadsCsv(leads)} disabled={leads.length === 0}>
-                <FileDown className="size-4" /> Exportar CSV
-              </Button>
-              <Button variant="outline" onClick={() => void exportLeadsReport(leads, state.brand.systemName)} disabled={leads.length === 0}>
-                <FileText className="size-4" /> Reporte
-              </Button>
+            <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Exportar leads">
+              {EXPORTS.map(({ kind, label, title, icon: Icon, variant }) => (
+                <Button
+                  key={kind}
+                  variant={variant}
+                  title={title}
+                  onClick={() => void runExport(kind)}
+                  disabled={leads.length === 0 || exporting !== null}
+                >
+                  {exporting === kind ? <Loader2 className="size-4 animate-spin" /> : <Icon className="size-4" />} {label}
+                </Button>
+              ))}
               <Button variant="ghost-destructive" onClick={() => setClearAll(true)} disabled={leads.length === 0}>
                 <Trash2 className="size-4" /> Vaciar
               </Button>
             </div>
           </div>
+          {leads.length > 0 && (
+            <p className="text-xs text-muted-foreground">
+              Excel y PDF llevan el diseño UTA, el resumen por día y hora y los contactos para revisar. El PDF abre la impresión: elige
+              «Guardar como PDF».
+            </p>
+          )}
+          {exportError && <p className="text-xs font-medium text-destructive">{exportError}</p>}
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex flex-col gap-3 sm:flex-row">
@@ -230,7 +270,7 @@ export default function LeadsSection() {
         open={clearAll}
         onOpenChange={setClearAll}
         title={`¿Borrar los ${leads.length} leads?`}
-        description="Se borra toda la lista, se reinician los premios entregados y el conteo del día vuelve a cero. No se puede deshacer: exporta el CSV antes si quieres conservarlos."
+        description="Se borra toda la lista, se reinician los premios entregados y el conteo del día vuelve a cero. No se puede deshacer: exporta el Excel o el CSV antes si quieres conservarlos."
         confirmLabel="Borrar todo"
         onConfirm={deleteAllParticipants}
       />

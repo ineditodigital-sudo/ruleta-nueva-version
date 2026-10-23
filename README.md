@@ -53,6 +53,24 @@ producción: no está en el repositorio, pídela al equipo.
 - Cada giro se registra en el servidor. Si el tótem se queda sin red, los giros se
   guardan en una cola local y se reenvían solos al volver la conexión.
 
+## Exportar los leads
+
+En **Panel → Leads** hay tres botones. Los tres ordenan los registros por hora,
+limpian nombres y teléfonos y marcan qué contactos son confiables (correo y
+teléfono válidos que no aparecen con otros nombres):
+
+- **Excel:** libro con diseño UTA en tres hojas: *Resumen* (fórmulas sobre la
+  lista, registros por día y por hora), *Leads* (tabla con filtros) y *Para
+  revisar* (correos y teléfonos compartidos, dominios mal escritos, quién jugó
+  más de una vez). La librería `exceljs` (≈950 KB) se descarga sólo al usarlo.
+- **PDF:** reporte de varias páginas listo para compartir. Se arma en el
+  navegador y abre la ventana de impresión: hay que elegir *Guardar como PDF*.
+- **CSV:** la misma lista, separada por comas, para Mailchimp, un CRM o Google
+  Sheets. Filtra *Contacto confiable = Sí* antes de una campaña.
+
+El análisis vive en `src/lib/leads.ts`, y cada formato en `src/lib/export.ts`,
+`exportXlsx.ts` y `reportPdf.ts`.
+
 ## Compilar y probar el build
 
 ```bash
@@ -68,7 +86,8 @@ npm run serve:dist   # sirve dist/ en http://127.0.0.1:8090 como el Apache de pr
 
 Con `serve:dist` corriendo, `scripts/e2e.mjs` juega en el tótem con un navegador
 real y revisa que el lead llegue al servidor, que se sumen inventario y conteo,
-que los leads no sean públicos y que la cola sin conexión se reenvíe.
+que los leads no sean públicos, que la cola sin conexión se reenvíe y que el
+panel exporte el CSV, el Excel y el PDF.
 
 ```bash
 npm i --no-save playwright && npx playwright install chromium   # una sola vez

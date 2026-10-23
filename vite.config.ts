@@ -26,6 +26,7 @@ export default defineConfig({
   },
   build: {
     target: "es2020",
-    chunkSizeWarningLimit: 900,
+    // exceljs (≈950 KB) va en su propio chunk y sólo se descarga al exportar a Excel.
+    chunkSizeWarningLimit: 1000,
   },
 });
